@@ -5,6 +5,7 @@ from calculator import Calculator
 from interface import Inputs
 import re
 
+
 class Controller:
     def __init__(self,num,root) -> None:
         self.inputs = Inputs(num,root=root)
@@ -33,42 +34,38 @@ class Controller:
         self.result_display.insert(0, result)
         self.result_display.config(state=tkinter.DISABLED) 
 
-    def plus_callback(self):
-        nums = self.check(self.inputs.getvalues())
+    def calculate_callback(self):
+        nums = self.check(self.inputs.get_values())
         if len(nums) == 0:
             self.change_output("Something wrong!")
         else:
             try:
-                self.change_output(self.calcul.plus(nums))
-            except:
+                self.calcul.change_rounding(self.inputs.get_roundings()) 
+                operators = self.inputs.get_operators()
+                result = self.operator_to_func(operators[1],nums[1],nums[2])
+                if (operators[2] == 'Multiply' or operators[2] == 'Divide') and (operators[0] == 'Plus' or operators[0] == 'Minus'):
+                    result = self.operator_to_func(operators[2],result,nums[3])
+                    result = self.operator_to_func(operators[0],nums[0],result)
+                else:
+                    result = self.operator_to_func(operators[0],nums[0],result)
+                    result = self.operator_to_func(operators[2],result,nums[3])
+                result = self.calcul.format(result)
+                if result.find('.') >= len('1 000 000 000 000'):
+                    self.change_output("Something wrong!")
+                else:
+                    self.change_output(result)
+            except Exception as error:
+                print(error)
                 self.change_output("Something wrong!")
 
-    def mupytiply_callback(self):
-        nums = self.check(self.inputs.getvalues())
-        if len(nums) == 0:
-            self.change_output("Something wrong!")
-        else:
-            try:
-                self.change_output(self.calcul.mupytiply(nums))
-            except:
-                self.change_output("Something wrong!")
+    def operator_to_func(self,operator,a,b):
+        if operator == 'Plus':
+            return self.calcul.plus(a,b)
+        elif operator == 'Minus':
+            return self.calcul.minus(a,b)
+        elif operator == 'Multiply':
+            return self.calcul.mupytiply(a,b)
+        elif operator == 'Divide':
+            return self.calcul.divide(a,b)
 
-    def minus_callback(self):
-        nums = self.check(self.inputs.getvalues())
-        if len(nums) == 0:
-            self.change_output("Something wrong!")
-        else:
-            try:
-                self.change_output(self.calcul.minus(nums))
-            except:
-                self.change_output("Something wrong!")
-
-    def divide_callback(self):
-        nums = self.check(self.inputs.getvalues())
-        if len(nums) == 0:
-            self.change_output("Something wrong!")
-        else:
-            try:
-                self.change_output(self.calcul.divide(nums))
-            except:
-                self.change_output("Something wrong!")
+        
