@@ -23,8 +23,7 @@ class Calculator:
             return value.to_integral_value(rounding=ROUND_DOWN)
 
     def output(self, digit):
-        print(digit)
-        return self.apply_rounding(digit)
+        return round(Decimal(digit),6)
 
     def format(self,digit):
         number = self.apply_rounding(digit)
@@ -42,29 +41,29 @@ class Calculator:
 
     def plus(self, a, b):
         try:
-            result = str(Decimal(a) + Decimal(b))
-            return self.output(result)
+            result = str(self.output(a) + self.output(b))
+            return str(self.output(result))
         except:
             return "Something wrong!"
 
     def mupytiply(self, a, b):
         try:
-            result = str(Decimal(a) * Decimal(b))
-            return self.output(result)
+            result = str(self.output(a) * self.output(b))
+            return str(self.output(result))
         except:
             return str("Something wrong!")
 
     def minus(self, a, b):
         try:
-            result = str(Decimal(a) - Decimal(b))
-            return self.output(result) 
+            result = str(self.output(a) - self.output(b))
+            return str(self.output(result))
         except:
             return str("Something wrong!")
 
     def divide(self, a, b):
         try:
-            result = str(Decimal(a) / Decimal(b))
-            return self.output(result)
+            result = str(self.output(a) / self.output(b))
+            return str(self.output(result))
         except:
             return str("Something wrong!")
 

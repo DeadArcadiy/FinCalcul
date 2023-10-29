@@ -50,7 +50,10 @@ class Controller:
                     result = self.operator_to_func(operators[0],nums[0],result)
                     result = self.operator_to_func(operators[2],result,nums[3])
                 result = self.calcul.format(result)
-                if result.find('.') >= len('1 000 000 000 000'):
+                print(result.find('.'))
+                if result.find('.') > len('1 000 000 000 000'):
+                    self.change_output("Something wrong!")
+                elif result.find('.') == -1 and len(result)>len('1 000 000 000 000'):
                     self.change_output("Something wrong!")
                 else:
                     self.change_output(result)
